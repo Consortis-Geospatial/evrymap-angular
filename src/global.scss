@@ -1,0 +1,236 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+/* CSS for leaflet */
+@import "~leaflet/dist/leaflet.css";
+@import "~leaflet-easybutton/src/easy-button.css";
+@import "~@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+@import "~leaflet-sidebar-v2/css/leaflet-sidebar.min.css";
+
+// changes for leaflet buttons
+.leaflet-bar button,
+.leaflet-bar button:hover,
+.leaflet-pm-toolbar .button-container a.leaflet-buttons-control-button,
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background: rgba(0, 0, 0, 0.4) !important;
+  border-radius: 0px !important;
+  border-bottom: none !important;
+}
+
+.leaflet-pm-toolbar .control-icon {
+  filter: brightness(0) invert(1);
+}
+
+.easy-button-button .button-state {
+  position: absolute;
+  top: -0.5px;
+  left: 0.2px;
+}
+
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  border: 0px !important;
+}
+
+// .leaflet-control-zoom ion-icon {
+//   margin-top: 4px;
+// }
+
+.leaflet-top ion-icon {
+  color: white;
+  --ionicon-stroke-width: 50px;
+  text-align: center;
+}
+
+.leaflet-sidebar-header {
+  background-color: var(--ion-color-primary, #3880ff);
+  color: white !important;
+}
+
+//keep that order so that it overwrites if active
+.leaflet-sidebar-tabs>ul>li ion-icon {
+  color: black !important;
+}
+
+.leaflet-sidebar-tabs>ul>li.active ion-icon {
+  color: white !important;
+}
+
+.leaflet-sidebar-tabs>ul>li.active {
+  background-color: var(--ion-color-primary, #3880ff);
+}
+
+.leaflet-sidebar-header {
+  padding-left: 40px;
+}
+
+// custom ionic elements
+
+// hide default ionicons title
+ion-icon:not(.iconStyle) {
+  pointer-events: none;
+}
+
+ion-footer {
+  height: 36px;
+
+  ion-toolbar {
+    --min-height: 36px;
+  }
+}
+
+ion-header {
+  ion-searchbar {
+    text-align: left;
+  }
+}
+
+ion-select-popover {
+  max-height: 250px;
+}
+
+// custom css
+.custom-ion-icon-position {
+  width: 80%;
+  height: 100%;
+}
+
+.custom-menu-header {
+  margin-left: 8px;
+  margin-right: 10px;
+
+  ion-item,
+  ion-toolbar {
+    font-size: 14px;
+    --color: var(--ion-card-color,
+        var(--ion-item-color, var(--ion-color-step-550, #737373)));
+  }
+
+  ion-item {
+    --background-focused: none;
+    --inner-padding-end: 5px;
+    --padding-start: 5px;
+  }
+}
+
+.custom-ion-card-header-no-padding-top-bottom {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.custom-no-left-right-paddings {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.custom-list-header {
+  height: 30px;
+  min-height: 30px;
+  padding-left: 0px;
+}
+
+.custom-card-header {
+  font-size: 14px;
+  line-height: 0;
+}
+
+.custom-subheader {
+  height: 36px;
+  --min-height: 36px;
+
+  ion-text {
+    --min-height: 36px;
+  }
+
+  .searchbar-input-container {
+    height: 30px;
+
+    input {
+      height: 30px;
+    }
+
+    ion-icon {
+      top: 5px;
+    }
+  }
+}
+
+.custom-button-clicked {
+  color: var(--ion-color-warning);
+}
+
+.custom-ionicon {
+  width: 25.19px;
+}
+
+.custom-ion-reorder {
+  margin-right: 10px;
+}
+
+.custom-cursor-pointer {
+  cursor: pointer;
+}
+
+// other css
+#basemaps,
+#layers,
+#legend,
+#tools,
+#search,
+#settings {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+app-select-external-layers {
+  overflow-y: hidden;
+}
+
+.leaflet-control-browser-print {
+  display: none !important;
+}
+
+.selectEditLayerComponent .popover-content {
+  --width: 400px;
+  --height: auto;
+  overflow: inherit;
+}
+
+.contextMenu-wrapper .leaflet-popup-content {
+  margin: 8px !important;
+}
+
+.EditLayerComponent {
+  --width: 800px;
+  --height: auto;
+  overflow: inherit;
+}
+
+.advsearch-select .popover-content {
+  width: 350px;
+}

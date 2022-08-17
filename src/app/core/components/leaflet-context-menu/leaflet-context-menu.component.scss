@@ -1,0 +1,17 @@
+.clickable:hover {
+  cursor: pointer;
+  background-color: var(--ion-color-light-shade);
+}
+
+.line {
+  padding: 3px;
+}
+
+ion-list {
+  padding: 0px;
+}
+
+ion-icon {
+  font-size: 20px;
+  transform: translateY(5px);
+}

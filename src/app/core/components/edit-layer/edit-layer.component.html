@@ -1,0 +1,142 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-text class="ion-padding-start"
+      >{{ "MAP.EDIT.EDIT_LAYER" | translate }}
+    </ion-text>
+  </ion-toolbar>
+</ion-header>
+
+<ion-grid>
+  <form [formGroup]="myform" *ngIf="myform">
+    <ion-item>
+      <ion-label position="stacked">{{
+        "MAP.EDIT.GEOMETRY" | translate
+      }}</ion-label>
+      <ion-input
+        readonly
+        [formControlName]="config?.edit?.geometryColumn"
+      ></ion-input>
+    </ion-item>
+    <div style="margin: 0px; padding: 0px">
+      <ion-row>
+        <ion-col size="6" *ngFor="let field of fields">
+          <div *ngIf="field?.type === 'string' || field?.type === 'number'">
+            <ion-item *ngIf="!(field?.readOnly && feature !== null)">
+              <ion-label position="stacked">{{ field.label }}</ion-label>
+              <ion-input
+                [type]="field?.type"
+                [formControlName]="field?.name"
+                clearInput
+              >
+              </ion-input>
+            </ion-item>
+            <ion-item *ngIf="field?.readOnly && feature !== null">
+              <ion-label position="stacked">{{ field.label }}</ion-label>
+              <ion-input
+                [type]="field?.type"
+                readonly
+                [formControlName]="field?.name"
+                clearInput
+              >
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger">
+              <li
+                *ngIf="
+                  !(field?.readOnly && feature !== null) &&
+                  myform.get(field?.name)?.errors?.required
+                "
+              >
+                <small> {{ "COMMON.REQUIRED_FIELD" | translate }} </small>
+              </li>
+            </ion-text>
+            <ion-text color="danger">
+              <li
+                *ngIf="
+                  !(field?.readOnly && feature !== null) &&
+                  myform.get(field?.name)?.errors?.maxlength
+                "
+              >
+                <small>
+                  {{ "MAP.EDIT.MAX_LENGTH_PREFIX" | translate }}
+                  {{
+                    myform?.get(field?.name)?.errors.maxlength.requiredLength
+                  }}
+                  {{ "MAP.EDIT.MAX_LENGTH_SUFFIX" | translate }}
+                </small>
+              </li>
+            </ion-text>
+          </div>
+
+          <div *ngIf="field?.type === 'dropdown' && lutTables[field.name]">
+            <ion-item [disabled]="field?.readOnly && feature !== null">
+              <ion-select
+                interface="popover"
+                placeholder="{{ 'MAP.EDIT.SELECT' | translate }}"
+                [formControlName]="field?.name"
+                clearInput
+              >
+                <ion-select-option [value]="null">Null</ion-select-option>
+                <ion-select-option
+                  *ngFor="let option of lutTables[field.name]"
+                  [value]="option[field?.dropdownValueField]"
+                  >{{
+                    option[field?.dropdownDescriptionField]
+                  }}</ion-select-option
+                >
+              </ion-select>
+            </ion-item>
+            <ion-text color="danger">
+              <li
+                *ngIf="
+                  !(field?.readOnly && feature !== null) &&
+                  myform.get(field?.name)?.errors?.required
+                "
+              >
+                <small> {{ "COMMON.REQUIRED_FIELD" | translate }} </small>
+              </li>
+            </ion-text>
+            <ion-text color="danger">
+              <li
+                *ngIf="
+                  !(field?.readOnly && feature !== null) &&
+                  myform.get(field?.name)?.errors?.maxlength
+                "
+              >
+                <small>
+                  {{ "MAP.EDIT.MAX_LENGTH_PREFIX" | translate }}
+                  {{
+                    myform?.get(field?.name)?.errors.maxlength.requiredLength
+                  }}
+                  {{ "MAP.EDIT.MAX_LENGTH_SUFFIX" | translate }}
+                </small>
+              </li>
+            </ion-text>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <ion-footer>
+      <ion-toolbar>
+        <ion-row>
+          <ion-col size="6">
+            <ion-button
+              type="submit"
+              color="primary"
+              expand="block"
+              (click)="onSubmit()"
+              [disabled]="!myform.valid"
+              >{{ "MAP.EDIT.SAVE" | translate }}</ion-button
+            >
+          </ion-col>
+          <ion-col size="6">
+            <ion-button color="primary" expand="block" (click)="cancel()">{{
+              "DIALOGS.CANCEL" | translate
+            }}</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-toolbar>
+    </ion-footer>
+  </form>
+</ion-grid>

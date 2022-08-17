@@ -1,0 +1,86 @@
+.mat-header-row {
+  min-height: 35px;
+}
+
+.mat-row {
+  min-height: 30px;
+  height: 30px;
+}
+
+.mat-cell,
+.mat-header-cell {
+  span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
+.mat-cell:first-of-type {
+  padding-left: 15px;
+}
+
+.mat-cell:not(first-of-type) {
+  padding-left: 5px;
+}
+
+.mat-row .mat-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-row:hover .mat-cell {
+  border-color: currentColor;
+}
+
+.mat-column-display_name {
+  max-width: 90% !important;
+}
+
+.mat-column-category {
+  padding-left: 12px !important;
+  max-width: 10% !important;
+}
+
+.demo-row-is-clicked {
+  font-weight: bold;
+}
+
+ion-segment {
+  border-radius: 0px;
+}
+
+ion-segment-button {
+  min-width: 400px;
+}
+
+mat-table {
+  max-height: 156px;
+  min-height: 66px;
+  // height: 1563px;
+  overflow-y: auto;
+  margin: 6px 6px 16px 6px;
+}
+
+mat-cell,
+mat-header-cell {
+  min-width: 100px;
+}
+
+
+
+
+
+ion-segment-button:not(.segment-button-checked) ::ng-deep {
+  background-color: rgb(207, 223, 228);
+  border: 1px solid rgb(160, 180, 180);
+}
+
+ion-segment-button:not(.segment-button-checked) ion-label::ng-deep {
+  color: rgb(40, 83, 98);
+}
+
+ion-segment-button.segment-button-checked ::ng-deep {
+  border: 1px solid rgb(180, 180, 200);
+}

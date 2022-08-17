@@ -1,0 +1,190 @@
+<ion-header [translucent]="true" *ngIf="configuration.general.loadHeader" [@headerCollapse]="headerCollapsed">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-img style="height: 50px" [src]="configuration.general.siteLogo" [alt]="configuration.general?.logoTitle">
+      </ion-img>
+      {{configuration.general?.siteTitle}}
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary" class="custom-subheader">
+    <ion-buttons slot="start" class="custom-subheader" *ngIf="configuration.general.loadHeader">
+      <ion-button (click)="headerCollapsed = !headerCollapsed;" title="{{'MAP.SUBHEADER.SHOW_HEADER' | translate}}"
+        *ngIf="headerCollapsed">
+        <ion-icon slot="icon-only" name="caret-down-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="headerCollapsed = !headerCollapsed;" title="{{'MAP.SUBHEADER.HIDE_HEADER' | translate}}"
+        *ngIf="!headerCollapsed">
+        <ion-icon slot="icon-only" name="caret-up-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="configuration.general?.helpUrl" (click)="openHelpWindow()">
+        <ion-icon name="help-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <app-subheader [searchedLayers]="searchedLayers"></app-subheader>
+  </ion-toolbar>
+  <ion-progress-bar *ngIf="isLoading" type="indeterminate" color="danger"></ion-progress-bar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div id="map"></div>
+  <!-- <div class="leaflet-right leaflet-top"
+    style="position:absolute;top:100px;right:10px;font-size: 12px; border-radius: 4px; border: 1px solid lightgrey; background-color: white; padding:0px 4px 4px 4px"
+    *ngIf="mapEventsService.tooltipText">
+    <ion-text class="leaflet-control">{{ mapEventsService.tooltipText }}</ion-text>
+  </div> -->
+  <div id="sidebar" class="leaflet-sidebar collapsed" style="height: 97%">
+    <!-- Nav tabs -->
+    <div class="leaflet-sidebar-tabs">
+      <ul role="tablist">
+        <!-- top aligned tabs -->
+        <li title="{{'MAP.SIDE_MENU.BASEMAPS' | translate}}">
+          <a href="#basemaps" role="tab">
+            <ion-icon slot="icon-only" name="map-outline"></ion-icon>
+          </a>
+        </li>
+        <li title="{{'MAP.SIDE_MENU.LAYERS' | translate}}">
+          <a href="#layers" role="tab">
+            <ion-icon slot="icon-only" name="layers-outline"></ion-icon>
+          </a>
+        </li>
+        <li *ngIf="configuration.layout?.legendControl" title="{{'MAP.SIDE_MENU.LEGEND' | translate}}">
+          <a href="#legend" role="tab">
+            <ion-icon slot="icon-only" name="list-outline"></ion-icon>
+          </a>
+        </li>
+        <li title="{{'MAP.SIDE_MENU.TOOLS' | translate}}">
+          <a href="#tools" role="tab">
+            <ion-icon slot="icon-only" name="hammer-outline"></ion-icon>
+          </a>
+        </li>
+        <li *ngIf="configuration.layout?.advancedFilters" title="{{'MAP.SIDE_MENU.SEARCH' | translate}}">
+          <a href="#search" role="tab">
+            <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+          </a>
+        </li>
+        <li title="{{'MAP.SIDE_MENU.SETTINGS_SUBMENU.SETTINGS' | translate}}">
+          <a href="#settings" role="tab">
+            <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="leaflet-sidebar-content">
+      <div class="leaflet-sidebar-pane" id="basemaps">
+        <app-basemaps (layerOnClickOutput)="basemapChanged($event)"></app-basemaps>
+      </div>
+
+      <div class="leaflet-sidebar-pane" id="layers">
+        <app-layers (loadViewEvent)="loadViewMapConfig($event)"></app-layers>
+      </div>
+
+      <div class="leaflet-sidebar-pane" id="legend">
+        <app-legend></app-legend>
+      </div>
+
+      <div class="leaflet-sidebar-pane" id="tools">
+        <app-tools [toolEnabled]="toolEnabled"></app-tools>
+      </div>
+
+      <div class="leaflet-sidebar-pane" id="search">
+        <app-advanced-search [searchedLayers]="searchedLayers"></app-advanced-search>
+      </div>
+
+      <div class="leaflet-sidebar-pane" id="settings">
+        <app-settings [language]="this.translationService.getLanguage()"></app-settings>
+      </div>
+    </div>
+  </div>
+
+  <div id="search-panel" class="leaflet-right"
+    [ngClass]="!searchCollapsed ? 'custom-search-not-collapsed' : 'custom-search-collapsed'"
+    [@searchCollapse]="searchCollapsed">
+    <!-- <div class="collapse-icon">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="5"></ion-col>
+          <ion-col size="2">
+            <ion-button
+              *ngIf="searchCollapsed"
+              (click)="dispatchActionsHelperService.dispatchSearchResultsSearchCollapsed(!searchCollapsed);"
+              title="{{'MAP.SIDE_MENU.LAYERS_SUBMENU.OPEN_SEARCH_PANEL' | translate}}"
+            >
+              <ion-icon size="large" name="caret-up-outline"></ion-icon>
+            </ion-button>
+            <ion-button
+              *ngIf="!searchCollapsed"
+              (click)="dispatchActionsHelperService.dispatchSearchResultsSearchCollapsed(!searchCollapsed);"
+              title="{{'MAP.SIDE_MENU.LAYERS_SUBMENU.CLOSE_SEARCH_PANEL' | translate}}"
+            >
+              <ion-icon size="large" name="caret-down-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col
+            size-xs="0"
+            size-sm="0"
+            size-md="1"
+            size-lg="2"
+            size-xl="3"
+          ></ion-col>
+          <ion-col
+            size-xs="5"
+            size-sm="5"
+            size-md="4"
+            size-lg="3"
+            size-xl="2"
+            style="padding-right: 15px"
+          >
+            <ion-searchbar
+              *ngIf="!searchCollapsed"
+              placeholder="Αναζήτηση Αποτελεσμάτων"
+              inputmode="text"
+              [debounce]="250"
+            ></ion-searchbar>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div> -->
+    <div class="collapse-icon">
+      <ion-button *ngIf="searchCollapsed" (click)="dispatchActionsHelperService.dispatchSearchResultsSearchCollapsed(
+          !searchCollapsed
+        );" title="{{'MAP.SIDE_MENU.LAYERS_SUBMENU.OPEN_SEARCH_PANEL' | translate}}">
+        <ion-icon size="large" name="caret-up-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="!searchCollapsed" (click)="dispatchActionsHelperService.dispatchSearchResultsSearchCollapsed(
+          !searchCollapsed
+        );" title="{{'MAP.SIDE_MENU.LAYERS_SUBMENU.CLOSE_SEARCH_PANEL' | translate}}">
+        <ion-icon size="large" name="caret-down-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <div class="search-box" leaflet-control>
+      <app-search-results [searchedLayers]="searchedLayers"></app-search-results>
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-title size="small">
+      Powered by EVRYMAP © 2018-{{currentYear}} |
+      <a href="http://www.consortis.gr" target="_blank">Consortis Geospatial</a>
+      <a *ngIf="configuration.layout?.footerLink?.url" [href]="configuration.layout?.footerLink?.url" target="_blank"
+        style="padding-left: 100px">
+        {{ configuration.layout?.footerLink?.text }}</a>
+
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>
+
+
+<div class="leaflet-bottom leaflet-right">
+  <p class=" leaflet-control" style="font-size: 12px" *ngIf="mouseCoordinates.x">
+
+    <ion-text color="primary"><b>X:</b></ion-text>
+    {{mouseCoordinates.x.toFixed(3)}}
+    <ion-text color="primary"><b>Y:</b></ion-text>
+    {{mouseCoordinates.y.toFixed(3)}}
+  </p>
+</div>

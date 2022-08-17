@@ -1,0 +1,220 @@
+<h1 class="leaflet-sidebar-header">
+  {{ "MAP.SIDE_MENU.SEARCH" | translate }}
+  <div class="leaflet-sidebar-close">
+    <ion-icon slot="icon-only" name="caret-back-outline"></ion-icon>
+  </div>
+</h1>
+<ion-card class="custom-menu-header">
+  <ion-card-content>
+    <form [formGroup]="searchForm">
+      <ion-item lines="none">
+        <ion-label>
+          {{ "MAP.SIDE_MENU.SEARCH_SUBMENU.SPATIAL_SEARCH" | translate }}
+        </ion-label>
+        <ion-toggle
+          slot="end"
+          name="apple"
+          color="secondary"
+          formControlName="spatialSearch"
+        ></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-select
+          value=""
+          interface="popover"
+          formControlName="layer"
+          placeholder="{{
+            'MAP.SIDE_MENU.SEARCH_SUBMENU.SELECT_LAYER' | translate
+          }} *"
+          (ionFocus)="selectLayerOnFocus()"
+          (ionChange)="selectLayerOnChange()"
+          [interfaceOptions]="{ cssClass: 'advsearch-select' }"
+        >
+          <ion-select-option
+            *ngFor="let layer of layersForSearch"
+            [value]="layer.properties.name"
+            [matTooltip]="layer.properties.name"
+            [matTooltipShowDelay]="400"
+            [title]="layer.properties.name"
+          >
+            {{ layer.properties.label }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select
+          placeholder="{{
+            'MAP.SIDE_MENU.SEARCH_SUBMENU.SELECT_OPERATOR' | translate
+          }}"
+          interface="popover"
+          formControlName="operator"
+          [interfaceOptions]="{ cssClass: 'advsearch-select' }"
+        >
+          <ion-select-option value="and">
+            {{ "MAP.SIDE_MENU.SEARCH_SUBMENU.AND_OPERATOR" | translate }}
+          </ion-select-option>
+          <ion-select-option value="or">
+            {{ "MAP.SIDE_MENU.SEARCH_SUBMENU.OR_OPERATOR" | translate }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </form>
+
+    <!-- filters list -->
+    <ion-list>
+      <ion-list-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-text color="secondary">
+              <!-- <h1>Awesome text</h1> -->
+              <b> {{ "COMMON.FILTERS" | translate }} </b>
+            </ion-text>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button (click)="createNewFilter()">
+              <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-list-header>
+
+      <!-- search by layer list -->
+      <ion-card *ngFor="let filter of filters; let i = index">
+        <ion-buttons *ngIf="i >= 0">
+          <ion-button
+            size="small"
+            class="custom-button-size-small"
+            (click)="deleteFilter(i)"
+          >
+            <ion-icon slot="icon-only" name="remove-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-card-content class="custom-card-content">
+          <ion-item>
+            <!-- // TODO να πετάξω τα ngModels στα φίλτρα και να τα ενσωματώσω με form array -->
+            <ion-select
+              placeholder="{{
+                'MAP.SIDE_MENU.SEARCH_SUBMENU.SELECT_FIELD' | translate
+              }} *"
+              interface="popover"
+              [disabled]="!this.searchForm.get('layer').value"
+              [(ngModel)]="filter.field"
+              [interfaceOptions]="{ cssClass: 'advsearch-select' }"
+            >
+              <ion-select-option
+                *ngFor="let field of layerFields"
+                [value]="field.name"
+              >
+                {{ field.description }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-select
+              placeholder="{{
+                'MAP.SIDE_MENU.SEARCH_SUBMENU.SELECT_OPERATOR' | translate
+              }} *"
+              interface="popover"
+              [(ngModel)]="filter.operator"
+              [interfaceOptions]="{ cssClass: 'advsearch-select' }"
+            >
+              <ion-select-option
+                *ngFor="let operator of filtersOperators"
+                [value]="operator.value"
+              >
+                {{
+                  "MAP.SIDE_MENU.SEARCH_SUBMENU.FILTERS_OPERATORS." +
+                    operator.description | translate
+                }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+              type="text"
+              placeholder="{{
+                'MAP.SIDE_MENU.SEARCH_SUBMENU.VALUE' | translate
+              }} *"
+              [(ngModel)]="filter.value"
+            ></ion-input>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- spatial search -->
+      <ion-card *ngIf="this.searchForm.value.spatialSearch">
+        <ion-card-content>
+          <ion-text>
+            <h6>
+              {{
+                "MAP.SIDE_MENU.SEARCH_SUBMENU.SPATIAL_DESCRIPTION_1" | translate
+              }}
+            </h6>
+          </ion-text>
+
+          <ion-item>
+            <ion-select
+              interface="popover"
+              placeholder="{{
+                'MAP.SIDE_MENU.SEARCH_SUBMENU.SELECT_OPERATOR' | translate
+              }} *"
+              [(ngModel)]="spatialOperator"
+              [interfaceOptions]="{ cssClass: 'advsearch-select' }"
+            >
+              <ion-select-option
+                *ngFor="let operator of filtersSpatialSearchOperators"
+                [value]="operator.value"
+              >
+                {{
+                  "MAP.SIDE_MENU.SEARCH_SUBMENU.SPATIAL_SEARCH_OPERATORS." +
+                    operator.description | translate
+                }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="spatialOperator === 'DWITHIN'">
+            <ion-label>m</ion-label>
+            <ion-input type="number" [(ngModel)]="distance"> </ion-input>
+          </ion-item>
+
+          <ion-text>
+            <h6>
+              {{
+                "MAP.SIDE_MENU.SEARCH_SUBMENU.SPATIAL_DESCRIPTION_2" | translate
+              }}
+            </h6>
+          </ion-text>
+
+          <ion-item>
+            <ion-select
+              interface="popover"
+              placeholder="{{
+                'MAP.SIDE_MENU.SEARCH_SUBMENU.SELECT_LAYER' | translate
+              }} *"
+              [(ngModel)]="spatialLayer"
+              (ionFocus)="selectSelectedLayerOnFocus()"
+              [interfaceOptions]="{ cssClass: 'advsearch-select' }"
+            >
+              <ion-select-option
+                *ngFor="let layerSelect of searchedLayersSelect"
+                [value]="layerSelect.layerName"
+              >
+                ({{ layerSelect.count }}) {{ layerSelect.description }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button (click)="searchOnSubmit()" [disabled]="searchForm.invalid">
+          <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-card-content>
+</ion-card>

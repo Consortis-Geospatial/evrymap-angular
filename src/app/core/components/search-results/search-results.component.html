@@ -1,0 +1,83 @@
+<div class="mat-table__wrapper" [ngStyle]="{
+    display: searchCollapsed || groups.length === 0 ? 'none' : 'block'
+  }">
+  <ion-toolbar *ngIf="!searchCollapsed">
+    <ion-buttons slot="start">
+      <ion-searchbar id="searchResults" placeholder="{{ 'MAP.SEARCH_RESULTS.SEARCH_RESULTS' | translate }}"
+        showCancelButton="never" [debounce]="250" (ionChange)="applySearchFilter($event)"></ion-searchbar>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="actionsClick($event)">
+        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-segment [value]="searchSegmentValue" (ionChange)="searchSegmentChanged($event)" mode="ios" scrollable
+    color="secondary">
+    <ion-segment-button *ngFor="let group of groups" [value]="group.value">
+      <ion-label color="secondary">
+        <b>{{ group.description | translate }}</b>
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData()">
+      <div>
+        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span> {{ displayedColumnsDescription[column] | translate}} </span>
+          </mat-header-cell>
+
+          <!--TODO HOOK FOR ADDITIONAL TABS -->
+          <ng-container *ngIf="displayedColumnsIsEvent[column]">
+            <mat-cell *matCellDef="let row">
+              <span (click)="customEvent($event, column, row, searchSegmentValue )">
+                <ion-button style="height:20px; max-width:100px"> {{ displayedColumnsDescription[column] }}
+                </ion-button>
+              </span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container *ngIf="displayedColumnsIsLink[column]">
+            <mat-cell *matCellDef="let row">
+              <span [title]="row.properties[column]">
+                <a [href]="row.properties[column]" target="_blank">
+                  {{ row.properties[column] }}</a>
+              </span>
+            </mat-cell>
+          </ng-container>
+          <ng-container *ngIf="!displayedColumnsIsLink[column]">
+            <mat-cell *matCellDef="let row">
+              <span [title]="row.properties[column]">
+                {{ row.properties[column] }}
+              </span>
+            </mat-cell>
+          </ng-container>
+        </ng-container>
+      </div>
+
+      <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <div *ngIf="addressResults.length > 0">
+        <mat-row matRipple *matRowDef="let row; columns: displayedColumns" (click)="zoomToObjectAddress(row.searchId)"
+          [class.demo-row-is-clicked]="row.clicked"></mat-row>
+      </div>
+      <div *ngIf="addressResults.length === 0">
+        <mat-row matRipple *matRowDef="let row; columns: displayedColumns"
+          (click)="zoomToObjectOtherLayers(row.searchId)" [class.demo-row-is-clicked]="row.clicked"></mat-row>
+      </div>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">
+          {{ "MAP.SEARCH_RESULTS.NO_RESULTS" | translate }}
+        </td>
+      </tr>
+    </mat-table>
+
+    <mat-paginator [ngStyle]="{
+        display: searchCollapsed ? 'none' : 'block'
+      }" [pageSizeOptions]="[25]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+
+<div class="ion-text-center" *ngIf="groups.length === 0">
+  {{ "MAP.SEARCH_RESULTS.NO_RESULTS" | translate }}
+</div>

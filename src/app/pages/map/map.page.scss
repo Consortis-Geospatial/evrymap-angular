@@ -1,0 +1,52 @@
+ion-progress-bar {
+  position: absolute;
+}
+
+#map {
+  height: 100%;
+}
+
+ion-content {
+  --offset-top: 92px !important;
+  --offset-bottom: 36px !important;
+}
+
+#search-panel {
+  width: 100%;
+  pointer-events: all;
+  position: absolute;
+  z-index: 1000;
+
+  .collapse-icon {
+    text-align: center;
+    position: relative;
+    bottom: 36px;
+
+    ion-button {
+      margin: 0px;
+      --background: rgba(0, 0, 0, 0.4) !important;
+    }
+  }
+}
+
+.search-box {
+  background: var(--ion-toolbar-background, var(--ion-background-color, #fff));
+  height: 100%;
+  margin: 0px 5px 0px 55px;
+  position: relative;
+  bottom: 36px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-bottom: none;
+}
+
+.custom-map-pointer {
+  cursor: pointer;
+}
+
+.custom-search-not-collapsed {
+  bottom: 0px;
+}
+
+.custom-search-collapsed {
+  bottom: 36px;
+}

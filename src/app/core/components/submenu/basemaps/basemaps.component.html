@@ -1,0 +1,24 @@
+<h1 class="leaflet-sidebar-header">
+  {{ "MAP.SIDE_MENU.BASEMAPS" | translate }}
+  <div class="leaflet-sidebar-close">
+    <ion-icon slot="icon-only" name="caret-back-outline"></ion-icon>
+  </div>
+</h1>
+<ion-card class="custom-menu-header" *ngFor="let l of menuBasemaps">
+  <div *ngIf="l.layers.length">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <b> {{ l.group | translate }} </b>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none" *ngFor="let layer of l.layers">
+        <ion-avatar slot="start" [class.custom-selected-basemap]="layer.selected"
+          [class.custom-cursor-pointer]="!layer.selected" (click)="!layer.hasError ? layerOnClick(layer.id) : null">
+          <img [src]="layer.image" />
+        </ion-avatar>
+        <ion-label>{{ layer.description | translate }}</ion-label>
+      </ion-item>
+    </ion-card-content>
+  </div>
+</ion-card>

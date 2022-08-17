@@ -1,0 +1,26 @@
+.search-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+// .search-full-width {
+// }
+
+.search-full-width {
+  height: 30px;
+  width: 100%;
+  background: var(--ion-background-color, #fff);
+  border-radius: 2px;
+
+  input {
+    height: 30px;
+    bottom: 20px;
+    color: black;
+    border: 0px;
+    border-radius: 2px;
+  }
+  input:focus {
+    border: 0px;
+  }
+}

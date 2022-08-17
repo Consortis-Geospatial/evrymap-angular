@@ -1,0 +1,465 @@
+<h1 class="leaflet-sidebar-header">
+  {{ "MAP.SIDE_MENU.TOOLS" | translate }}
+  <div class="leaflet-sidebar-close">
+    <ion-icon slot="icon-only" name="caret-back-outline"></ion-icon>
+  </div>
+</h1>
+<ion-grid>
+  <ion-row>
+    <ion-col
+      size="3"
+      class="ion-text-center"
+      *ngIf="this.configuration.layout?.measureTools"
+    >
+      <ion-button
+        [color]="toolEnabled !== 'line' ? 'secondary' : 'warning'"
+        (click)="measureLineClick()"
+      >
+        <ion-img
+          src="assets\icon\ruler-white.png"
+          class="custom-ionicon"
+        ></ion-img>
+      </ion-button>
+    </ion-col>
+    <ion-col
+      size="3"
+      class="ion-text-center"
+      *ngIf="this.configuration.layout?.measureTools"
+    >
+      <ion-button
+        [color]="toolEnabled !== 'polygon' ? 'secondary' : 'warning'"
+        (click)="measurePolygonClick()"
+      >
+        <ion-img
+          src="assets\icon\surface-icon_white.png"
+          class="custom-ionicon"
+        ></ion-img>
+      </ion-button>
+    </ion-col>
+    <ion-col size="3" class="ion-text-center">
+      <ion-button
+        [color]="toolEnabled !== 'zoomXY' ? 'secondary' : 'warning'"
+        (click)="zoomToXYClick()"
+      >
+        <ion-icon
+          slot="icon-only"
+          name="location-outline"
+          color="light"
+        ></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col
+      size="3"
+      class="ion-text-center"
+      *ngIf="this.configuration.layout?.print"
+    >
+      <ion-button
+        [color]="toolEnabled !== 'print' ? 'secondary' : 'warning'"
+        (click)="printMapClick()"
+      >
+        <ion-icon
+          slot="icon-only"
+          name="print-outline"
+          color="light"
+        ></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<ion-card
+  class="custom-menu-header"
+  *ngIf="['line', 'polygon'].includes(toolEnabled)"
+>
+  <ion-card-header class="custom-ion-card-header-no-padding-top-bottom">
+    <ion-toolbar>
+      <ion-buttons slot="start" style="margin-left: 0px">
+        <ion-card-subtitle>
+          <b *ngIf="toolEnabled === 'line'">
+            {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.DISTANCE.HEADER" | translate }}
+          </b>
+          <b *ngIf="toolEnabled === 'polygon'">
+            {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.AREA.HEADER" | translate }}
+          </b>
+        </ion-card-subtitle>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-badge slot="end" color="light">
+          {{ layersAdded.length }}
+        </ion-badge>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-list>
+      <ion-item lines="none" *ngFor="let layer of layersAdded">
+        <ion-label>
+          {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.DISTANCE.MEASUREMENT" | translate }}
+          {{ layer.properties.id }}</ion-label
+        >
+        <ion-buttons>
+          <ion-button (click)="zoomToLayer(layer.properties.id)">
+            <ion-icon
+              slot="icon-only"
+              name="search-circle-outline"
+              color="success"
+              title="{{ 'COMMON.ZOOM_IN' | translate }}"
+            ></ion-icon>
+          </ion-button>
+          <ion-button (click)="removeLayerClick(layer.properties.id)">
+            <ion-icon
+              slot="icon-only"
+              name="trash-outline"
+              color="danger"
+              title="{{ 'COMMON.DELETE' | translate }}"
+            >
+            </ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
+
+<div *ngIf="toolEnabled === 'zoomXY'">
+  <ion-card class="custom-menu-header">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <b>
+          {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.ZOOM_TO_XY.HEADER" | translate }}
+        </b>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="zoomXYForm" (ngSubmit)="zoomInClick()">
+        <ion-list>
+          <ion-item>
+            <ion-label position="floating">
+              {{
+                "MAP.SIDE_MENU.TOOLS_SUBMENU.ZOOM_TO_XY.COORDINATE_SYSTEM"
+                  | translate
+              }}
+              <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-select
+              required
+              interface="popover"
+              formControlName="coordinateSystem"
+              (ngModelChange)="coordinateSystemChanged()"
+              [interfaceOptions]="{ cssClass: 'advsearch-select' }"
+            >
+              <ion-select-option
+                *ngFor="let system of coordinateSystems"
+                value="{{ system.value }}"
+              >
+                {{ system.description | translate }}
+              </ion-select-option>
+            </ion-select>
+            <ng-container
+              *ngIf="
+                fZoom.coordinateSystem.invalid &&
+                (fZoom.coordinateSystem.dirty || fZoom.coordinateSystem.touched)
+              "
+            >
+              <ion-text color="danger">
+                <li *ngIf="fZoom.coordinateSystem.errors.required">
+                  <small>{{ "COMMON.REQUIRED_FIELD" | translate }}</small>
+                </li>
+              </ion-text>
+            </ng-container>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">
+              {{
+                "MAP.SIDE_MENU.TOOLS_SUBMENU.ZOOM_TO_XY.X_COORDINATE"
+                  | translate
+              }}
+              <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input
+              required
+              type="number"
+              formControlName="xCoordinate"
+            ></ion-input>
+            <ng-container
+              *ngIf="
+                fZoom.xCoordinate.invalid &&
+                (fZoom.xCoordinate.dirty || fZoom.xCoordinate.touched)
+              "
+            >
+              <ion-text color="danger">
+                <li *ngIf="fZoom.xCoordinate.errors.required">
+                  <small> {{ "COMMON.REQUIRED_FIELD" | translate }} </small>
+                </li>
+              </ion-text>
+            </ng-container>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">
+              {{
+                "MAP.SIDE_MENU.TOOLS_SUBMENU.ZOOM_TO_XY.Y_COORDINATE"
+                  | translate
+              }}
+              <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input type="number" formControlName="yCoordinate"></ion-input>
+            <ng-container
+              *ngIf="
+                fZoom.yCoordinate.invalid &&
+                (fZoom.yCoordinate.dirty || fZoom.yCoordinate.touched)
+              "
+            >
+              <ion-text color="danger">
+                <li *ngIf="fZoom.yCoordinate.errors.required">
+                  <small>{{ "COMMON.REQUIRED_FIELD" | translate }}</small>
+                </li>
+              </ion-text>
+            </ng-container>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">
+              {{
+                "MAP.SIDE_MENU.TOOLS_SUBMENU.ZOOM_TO_XY.ZOOM_LEVEL" | translate
+              }}
+              <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input type="number" formControlName="zoomLevel"></ion-input>
+            <ng-container
+              *ngIf="
+                fZoom.zoomLevel.invalid &&
+                (fZoom.zoomLevel.dirty || fZoom.zoomLevel.touched)
+              "
+            >
+              <ion-text color="danger">
+                <li *ngIf="fZoom.zoomLevel.errors.required">
+                  <small>{{ "COMMON.REQUIRED_FIELD" | translate }}</small>
+                </li>
+              </ion-text>
+            </ng-container>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">
+              {{ "COMMON.NAME" | translate }}
+            </ion-label>
+            <ion-input type="text" formControlName="pinName"></ion-input>
+            <ng-container
+              *ngIf="
+                fZoom.pinName.invalid &&
+                (fZoom.pinName.dirty || fZoom.pinName.touched)
+              "
+            >
+              <ion-text color="danger">
+                <li *ngIf="fZoom.pinName.errors.required">
+                  <small>{{ "COMMON.REQUIRED_FIELD" | translate }}</small>
+                </li>
+              </ion-text>
+            </ng-container>
+          </ion-item>
+        </ion-list>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button
+              (click)="removeMarkersClick()"
+              [disabled]="pinsAdded.length === 0"
+              title="{{
+                'MAP.SIDE_MENU.TOOLS_SUBMENU.ZOOM_TO_XY.REMOVE_MARKERS'
+                  | translate
+              }}"
+            >
+              <ion-icon
+                slot="icon-only"
+                name="trash-outline"
+                color="danger"
+              ></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button
+              (click)="getFromMapClick()"
+              title="{{
+                'MAP.SIDE_MENU.TOOLS_SUBMENU.ZOOM_TO_XY.GET_FROM_MAP'
+                  | translate
+              }}"
+              [disabled]="fZoom.coordinateSystem.invalid"
+            >
+              <ion-icon
+                slot="icon-only"
+                name="pin-outline"
+                [color]="!getFromMapClicked ? 'medium' : 'warning'"
+              >
+              </ion-icon>
+            </ion-button>
+            <ion-button
+              type="submit"
+              title="{{
+                'MAP.SIDE_MENU.TOOLS_SUBMENU.ZOOM_TO_XY.CREATE_PIN' | translate
+              }}"
+              [disabled]="!zoomXYForm.valid"
+            >
+              <ion-icon
+                slot="icon-only"
+                name="navigate-outline"
+                color="success"
+              ></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="custom-menu-header">
+    <ion-card-header class="custom-ion-card-header-no-padding-top-bottom">
+      <ion-card-subtitle>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button
+              (click)="pinsCollapsed = !pinsCollapsed"
+              title="{{ 'MAP.SUBHEADER.SHOW_HEADER' | translate }}"
+              *ngIf="pinsCollapsed"
+            >
+              <ion-icon slot="icon-only" name="caret-down-outline"></ion-icon>
+            </ion-button>
+            <ion-button
+              (click)="pinsCollapsed = !pinsCollapsed"
+              title="{{ 'MAP.SUBHEADER.HIDE_HEADER' | translate }}"
+              *ngIf="!pinsCollapsed"
+            >
+              <ion-icon slot="icon-only" name="caret-up-outline"></ion-icon>
+            </ion-button>
+            <b>
+              {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.ZOOM_TO_XY.PINS" | translate }}
+            </b>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-badge slot="end" color="light">
+              {{ pinsAdded.length }}
+            </ion-badge>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content [@pinsCollapsed]="pinsCollapsed">
+      <ion-text *ngIf="pinsAdded.length === 0">
+        {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.ZOOM_TO_XY.NO_PINS" | translate }}
+      </ion-text>
+      <ion-list *ngIf="pinsAdded.length > 0">
+        <ion-item *ngFor="let pin of pinsAdded">
+          <ion-label> {{ pin.properties.name }} </ion-label>
+          <ion-buttons slot="end">
+            <ion-button (click)="zoomToMarker(pin.properties.name)">
+              <ion-icon
+                slot="icon-only"
+                name="search-circle-outline"
+                color="success"
+                title="{{ 'COMMON.ZOOM_IN' | translate }}"
+              ></ion-icon>
+            </ion-button>
+            <ion-button (click)="removeMarkerClick(pin.properties.name)">
+              <ion-icon
+                slot="icon-only"
+                name="trash-outline"
+                color="danger"
+                title="{{ 'COMMON.DELETE' | translate }}"
+              >
+              </ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</div>
+
+<ion-card class="custom-menu-header" *ngIf="toolEnabled === 'print'">
+  <ion-card-header>
+    <ion-card-subtitle>
+      <b>
+        {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.PRINT_MAP.HEADER" | translate }}
+      </b>
+    </ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <form [formGroup]="printForm" (ngSubmit)="printSubmit()">
+      <ion-item>
+        <ion-label position="floating">
+          {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.PRINT_MAP.PAGE_SIZE" | translate }}
+          <ion-text color="danger">*</ion-text>
+        </ion-label>
+        <ion-select required interface="popover" formControlName="size">
+          <ion-select-option *ngFor="let size of pageSizes" value="{{ size }}">
+            {{ size }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">
+          {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.PRINT_MAP.ORIENTATION" | translate }}
+          <ion-text color="danger">*</ion-text>
+        </ion-label>
+        <ion-select required interface="popover" formControlName="orientation">
+          <ion-select-option
+            *ngFor="let orientation of pageOrientations"
+            value="{{ orientation.value }}"
+          >
+            {{
+              "MAP.SIDE_MENU.TOOLS_SUBMENU.PRINT_MAP." + orientation.description
+                | translate
+            }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">
+          {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.PRINT_MAP.SCALE" | translate }}
+          <ion-text color="danger">*</ion-text>
+        </ion-label>
+        <ion-input
+          required
+          formControlName="scale"
+          type="number"
+          (ionBlur)="onScaleChange()"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">
+          {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.PRINT_MAP.GRID_STEP" | translate }}
+        </ion-label>
+        <ion-input formControlName="gridScale" type="number"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">
+          {{ "COMMON.TITLE" | translate }}
+        </ion-label>
+        <ion-input formControlName="title" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">
+          {{ "COMMON.DESCRIPTION" | translate }}
+        </ion-label>
+        <ion-input formControlName="description" type="text"></ion-input>
+      </ion-item>
+      <ion-toolbar>
+        <ion-buttons slot="end">
+          <ion-button type="submit" [disabled]="printForm.invalid">
+            <ion-icon slot="icon-only" name="checkmark-done-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </form>
+  </ion-card-content>
+</ion-card>
+
+<ion-text leaflet-browser-print-content style="display: none">
+  <!-- <div>
+    {{ "MAP.SIDE_MENU.TOOLS_SUBMENU.PRINT_MAP.SCALE" | translate }}:
+    {{ scale.kilometers }}
+  </div> -->
+  <ion-row>
+    <ion-col>
+      <h5>{{ this.printForm.get("description").value }}</h5>
+    </ion-col>
+    <ion-col>
+      <h5>1 : {{ this.printForm.get("scale").value }}</h5>
+    </ion-col>
+  </ion-row>
+</ion-text>

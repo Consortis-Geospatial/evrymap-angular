@@ -1,0 +1,16 @@
+<div class="contextMenuContainer" style="width: 200px">
+  <ion-list>
+    <div class="line" [ngClass]="line?.hyperlink ? 'clickable' : 'not-clickable'"
+      *ngFor="let line of configLayer.contextMenu; let i = index">
+      <div (click)="openHyperlink(line?.hyperlink)" *ngIf="!line?.callback">
+        <ion-icon *ngIf="line?.hyperlink" [name]="line.image"></ion-icon>
+        {{ line.text }}
+      </div>
+      <!-- TODO HOOK FOR ADDITIONAL TABS -->
+      <div (click)="customEvent($event, line?.callback, feature, configLayer.name)" *ngIf="line?.callback"
+        class="clickable line">
+        {{ line?.text }}
+      </div>
+    </div>
+  </ion-list>
+</div>

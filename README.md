@@ -1,5 +1,4 @@
-# evrymap-angular
-
+**A nodeJS map portal**
 
 EVRYMAP allows you to create interactive map portals. It's based on Angular, Leaflet and Ionic.
 The default recommended server spatial software is [MapServer](https://mapserver.org/) (although in theory any other map server -like Geoserver- could be used.
@@ -43,7 +42,7 @@ It provides create and edit utilites for use in an iframe so that you can includ
 - Edit the configuration.json file in the "/src/assets/config/" folder accordingly.
 
 **proxy**  
-If you need the advanced filter tab you have to setup the proxy server from //todo proxy link
+If you need the advanced filter tab you have to setup the proxy server from https://github.com/Consortis-Geospatial/resource-proxy-node
 
 - Git clone the project or download it.
 - Run
@@ -54,10 +53,10 @@ If you need the advanced filter tab you have to setup the proxy server from //to
 
   in a node command prompt
 
-- Configuration according to //todo
+- Configuration according to https://github.com/Consortis-Geospatial/resource-proxy-node
 
 **ogre Api**  
-If you need your own api for gdal operations you have to setup the ogre api from //todo ogre api link
+If you need your own api for gdal operations you have to setup the ogre api from https://github.com/Consortis-Geospatial/ogre-api
 
 - Git clone the project or download it.
 - Run
@@ -167,7 +166,7 @@ layers
 - **language** - Default App language e.g. "en". Currently, only Greek and English resource files are provided.("en" or "el")
 - **searchAddressMode** - The default service for searching address from the top right searchbar. Currently only Nominatim is supported.
 - **ogrApi** - The default url for the api for gdal operations, e.g. converting json to shapefiles and importing shapefiles.
-  The application works with the "https://ogre.adc4gis.com/" api or an api with the same endpoints . Our api can be used (e.g. "http://localhost:3100/api/v1/"). //TODO
+  The application works with the "https://ogre.adc4gis.com/" api or an api with the same endpoints . Our api can be used (e.g. "http://localhost:3100/api/v1/").    Read more on https://github.com/Consortis-Geospatial/ogre-api
 - **helpUrl** - Optional. An extra url for a help link that appears left in the top bar. e.g. "http://google.com"
 
 

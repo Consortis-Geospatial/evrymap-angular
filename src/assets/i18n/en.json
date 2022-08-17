@@ -1,0 +1,195 @@
+{
+  "MAP": {
+    "EDIT": {
+      "NO_LAYERS": "No editable layers found",
+      "EDIT_LAYER": "Edit Layer",
+      "SAVE": "Save",
+      "MAX_LENGTH_PREFIX": "Max length of ",
+      "MAX_LENGTH_SUFFIX": "characters",
+      "GEOMETRY": "Geometry",
+      "SAVE_SUCCESS": "Save Successful",
+      "SELECT": "Choose"
+    },
+    "SEARCH_RESULTS": {
+      "ADDRESS": "Address",
+      "ADDRESSES": "Addresses",
+      "CATEGORY": "Category",
+      "NO_RESULTS": "No results",
+      "SEARCH_RESULTS": "Search Results"
+    },
+    "SUBHEADER": {
+      "SEARCH_ADDRESS": "Search Address",
+      "ZOOM_OUT": "Zoom Out",
+      "POINT_SEARCH": "Identify Features",
+      "RECTANGLE_SEARCH": "Select by Rectangle",
+      "POLYGON_SEARCH": "Select by Polygon",
+      "FULL_FOCUS": "Full Focus",
+      "EDIT_LAYERS": "Edit Or Create Layer",
+      "PREVIOUS_EXTENT": "Previous Extent",
+      "NEXT_EXTENT": "Next Extent",
+      "HIDE_HEADER": "Hide Header",
+      "SHOW_HEADER": "Show Header",
+      "POINT_SEARCH_VALUE": "search on layers",
+      "NO_LAYERS_FOUND": "No layers found",
+      "SELECT_LAYER_TO_EDIT": "Select a layer to edit",
+      "SELECT_LAYER": "Select a layer",
+      "ADD_PART": "Add Part"
+    },
+    "SIDE_MENU": {
+      "BASEMAPS": "Basemaps",
+      "LAYERS": "Layers",
+      "LEGEND": "Legend",
+      "SEARCH": "Search",
+      "TOOLS": "Tools",
+      "BASEMAP_SUBMENU": {
+        "HEADER": "OSM"
+      },
+      "LAYERS_SUBMENU": {
+        "REORDER_LAYER": "Click and drag the layer to a new position",
+        "TOGGLE_VISIBLE": "Toggle layer visibility",
+        "TOGGLE_SELECTABLE": "Toggle selectability",
+        "EXPORT_TO": "Export to {{exportType}}",
+        "ZOOM_TO_LAYER": "Zoom to layer extent",
+        "TRANSPARENCY": "Transparency",
+        "ACTIONS": "Actions",
+        "ADD_LAYER": "Add Layer",
+        "VIEWS": "Map Views",
+        "SAVE_VIEW_PLACEHOLDER": "Name of new view",
+        "SAVE_VIEW": "Save Map View",
+        "HOME_VIEW": "Save Map View as Home",
+        "SAVED_VIEWS": "Saved Map Views",
+        "CLEAR_SAVED_VIEWS": "Delete All Saved Views",
+        "OPEN_SEARCH_PANEL": "Open Search Panel",
+        "CLOSE_SEARCH_PANEL": "Close Search Panel",
+        "VIEW_SAVED": "Map View is saved",
+        "VIEW_DELETED": "Map View is deleted",
+        "HOME": "Home",
+        "ADDRESS": "Address",
+        "SERVICE_TYPE": "Service Type",
+        "CONNECT": "Connect",
+        "LAYERS": "Layers",
+        "TITLE": "Title",
+        "STROKE_COLOR": "Stroke Color",
+        "STROKE_WIDTH": "Stroke Width",
+        "FILL_COLOR": "Fill Color",
+        "DOESNT_ACCEPT_JSON": "DOES NOT ACCEPT JSON",
+        "RADIUS": "Point Size",
+        "FILL_OPACITY": "Fill Opacity",
+        "ADD_SHAPEFILE": "Add Shapefile(Zip), KML, KMZ, DXF",
+        "SOURCE_SRS": "file SRS"
+      },
+      "TOOLS_SUBMENU": {
+        "DISTANCE": {
+          "HEADER": "Distance Measurement",
+          "POPUP_DISTANCE": "Distance",
+          "MEASUREMENT": "Measurement"
+        },
+        "AREA": {
+          "HEADER": "Area Measurement",
+          "POPUP_AREA": "Area"
+        },
+        "ZOOM_TO_XY": {
+          "HEADER": "Zoom To XY",
+          "COORDINATE_SYSTEM": "Available Coordinate Systems",
+          "X_COORDINATE": "Easting (λ)",
+          "Y_COORDINATE": "Northing (φ)",
+          "ZOOM_LEVEL": "Zoom Level",
+          "REMOVE_MARKERS": "Remove All Pins",
+          "GET_FROM_MAP": "Double click on the map to get the point coordinates",
+          "CREATE_PIN": "Create Pin",
+          "PINS": "Pins",
+          "NO_PINS": "No pins on map",
+          "DOUBLE_CLICK_MAP": "Get coordinates with double click",
+          "UNNAMED": "Unnamed",
+          "MARKERS_REMOVED": "All pins removed"
+        },
+        "PRINT_MAP": {
+          "HEADER": "Print Map",
+          "PAGE_SIZE": "Page Size",
+          "ORIENTATION": "Orientation",
+          "SCALE": "Scale 1:",
+          "GRID_STEP": "Gris step",
+          "LANDSCAPE": "Landscape",
+          "PORTRAIT": "Portrait",
+          "AREA_SELECTION": "Area Selection"
+        }
+      },
+      "SEARCH_SUBMENU": {
+        "FILTERS_OPERATORS": {
+          "EQUAL": "Equal to",
+          "NOT_EQUAL": "Not Equal to",
+          "GREATER_THAN": "Is greater than",
+          "LESS_THAN": "Is less than",
+          "GREATER_OR_EQUAL": "Is greater or equal to",
+          "LESS_OR_EQUAL": "Is less or equal to",
+          "IS_LIKE": "Contains",
+          "STARTS_WITH": "Starts with",
+          "END_WITH": "Ends with"
+        },
+        "SPATIAL_SEARCH_OPERATORS": {
+          "INTERSECTS": "Intersects",
+          "CONTAINS": "Contains",
+          "WITHIN": "Is Within",
+          "WITHIN_DISTANCE": "Is within distance",
+          "CROSSES": "Crosses",
+          "OVERLAPS": "Overlaps",
+          "TOUCHES": "Touches"
+        },
+        "AND_OPERATOR": "All values (AND)",
+        "OR_OPERATOR": "Any value (OR)",
+        "SPATIAL_SEARCH": "Spatial Search",
+        "SELECT_LAYER": "Select Layer",
+        "SELECT_FIELD": "Select Field",
+        "SELECT_OPERATOR": "Select Operator",
+        "VALUE": "Value",
+        "FILTERS_NOT_FILLED_OUT": "Filters not filled out",
+        "SPATIAL_FILTERS_NOT_FILLED_OUT": "Spatial filters not filled out",
+        "SPATIAL_DESCRIPTION_1": "that",
+        "SPATIAL_DESCRIPTION_2": "the selected features of layer"
+      },
+      "SETTINGS_SUBMENU": {
+        "SETTINGS": "Settings",
+        "LANGUAGE": "Language",
+        "ENGLISH": "English",
+        "GREEK": "Greek",
+        "SELECT_LANGUAGE": "Choose Language"
+      }
+    }
+  },
+  "COMMON": {
+    "NAME": "Name",
+    "TITLE": "Title",
+    "DESCRIPTION": "Description",
+    "REQUIRED_FIELD": "Required Field",
+    "REQUIRED_FIELDS": "There are required fields that are empty",
+    "DELETE": "Delete",
+    "ZOOM_IN": "Zoom In",
+    "HIDE": "Hide",
+    "SHOW": "Show",
+    "SEARCH": "Search",
+    "CLICK": "Click for {{value}}",
+    "FILTERS": "Filters"
+  },
+  "DIALOGS": {
+    "CONFIRMATION": "Confirm",
+    "CANCEL": "Cancel"
+  },
+  "ERRORS": {
+    "HTTP": "There was an error on http call '{{url}}'",
+    "MAP": {
+      "LOAD_LAYER": "There is an error on loading layer {{layer}}"
+    },
+    "LEGEND": {
+      "NO_IMAGE": "No Image"
+    },
+    "TOOLS": {
+      "COORDINATE_CONVERTION": "Error on coordinate convertion",
+      "PIN_WITH_SAME_NAME": "Creating a point with the same name is not allowed",
+      "URL_IS_NULL": "Request URL is null"
+    }
+  },
+  "EPSG:2100": "GGRS87",
+  "EPSG:4326": "WGS'84",
+  "EPSG:3857": "WGS'84 (Pseudomercator)",
+  "CONFIG": {}
+}

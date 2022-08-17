@@ -1,0 +1,57 @@
+<ion-toolbar color="primary" class="custom-subheader">
+  <ion-buttons slot="end" class="custom-subheader">
+    <ion-button *ngIf="
+        !this.mapEventsService.iframeModeOn &&
+        this.configuration.general?.loadEditMod
+      " (click)="editLayerClick()" title="{{ 'MAP.SUBHEADER.EDIT_LAYERS' | translate }}"
+      [class.custom-button-clicked]="editClicked">
+      <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="this.configuration.layout?.navigation" (click)="previousExtentClick()"
+      title="{{ 'MAP.SUBHEADER.PREVIOUS_EXTENT' | translate }}" disabled="{{ disableHistory.previous }}">
+      <ion-icon slot="icon-only" name="arrow-back-circle-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="this.configuration.layout?.navigation" (click)="nextExtentClick()"
+      title="{{ 'MAP.SUBHEADER.NEXT_EXTENT' | translate }}" disabled="{{ disableHistory.next }}">
+      <ion-icon slot="icon-only" name="arrow-forward-circle-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="this.configuration.layout?.navigation" (click)="homeClick()"
+      title="{{ 'MAP.SUBHEADER.FULL_FOCUS' | translate }}">
+      <ion-icon slot="icon-only" name="home-outline"></ion-icon>
+    </ion-button>
+    <!-- <ion-button
+      (click)="polygonSearch()"
+      title="{{ 'MAP.SUBHEADER.POLYGON_SEARCH' | translate }}"
+      [class.custom-button-clicked]="polygonSearchClicked"
+    >
+      <ion-icon slot="icon-only" name="triangle-outline"></ion-icon>
+    </ion-button> -->
+    <ion-button (click)="rectangleSearch()" title="{{ 'MAP.SUBHEADER.RECTANGLE_SEARCH' | translate }}"
+      [class.custom-button-clicked]="rectangleSearchClicked">
+      <ion-icon slot="icon-only" name="tablet-landscape-outline"></ion-icon>
+      <!-- <ion-icon slot="icon-only" name="square-outline"></ion-icon> -->
+    </ion-button>
+    <ion-button (click)="pointSearch()" title="{{ 'MAP.SUBHEADER.POINT_SEARCH' | translate }}"
+      [class.custom-button-clicked]="pointSearchClicked">
+      <ion-icon slot="icon-only" name="information-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="this.configuration.layout?.navigation" (click)="map.zoomIn()"
+      title="{{ 'COMMON.ZOOM_IN' | translate }}">
+      <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="this.configuration.layout?.navigation" (click)="map.zoomOut()"
+      title="{{ 'MAP.SUBHEADER.ZOOM_OUT' | translate }}">
+      <ion-icon slot="icon-only" name="remove-outline"></ion-icon>
+    </ion-button>
+    <div *ngIf="this.configuration.layout?.quickSearch" class="search-full-width">
+      <input type="text" placeholder="{{ 'MAP.SUBHEADER.SEARCH_ADDRESS' | translate }}" matInput
+        [matAutocomplete]="auto" (keyup)="searchAutocompleteAddress($event)" />
+      <mat-autocomplete #auto="matAutocomplete" [panelWidth]="300">
+        <mat-option *ngFor="let option of filteredOptions" [value]="option" [matTooltip]="option"
+          [matTooltipShowDelay]="400">
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
+    </div>
+  </ion-buttons>
+</ion-toolbar>

@@ -1,0 +1,16 @@
+<ion-list>
+  <ion-list-header>
+    <ion-label>{{
+      "MAP.SIDE_MENU.LAYERS_SUBMENU.EXPORT_TO" | translate: { exportType: "" }
+      }}</ion-label>
+  </ion-list-header>
+  <ion-item button (click)="dismissPopover('CSV', 'EPSG:4326')">
+    <ion-label>CSV</ion-label>
+  </ion-item>
+  <p *ngIf="!hideShapefile" class="ion-no-margin">
+    <ion-item button *ngFor="let crs of crsArray; let i = index" (click)="dismissPopover('SHAPEZIP', crs?.value)">
+      <ion-label [matTooltipShowDelay]="400" matTooltip="{{ crs?.description | translate }}">
+        Shapefile: {{ crs?.description | translate }}</ion-label>
+    </ion-item>
+  </p>
+</ion-list>

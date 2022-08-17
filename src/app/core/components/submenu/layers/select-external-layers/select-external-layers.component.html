@@ -1,0 +1,21 @@
+
+<ion-header slot="fixed">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="dismiss()">cancel</ion-button>
+      <ion-button (click)="dismiss(selectedLayers)">ok</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-searchbar #searchbar (ionChange)="search(searchbar.value)" placeholder="{{'MAP.SIDE_MENU.SEARCH' | translate}}"></ion-searchbar>
+</ion-header>
+
+  <ion-list>
+    <div  *ngFor="let wxsLayer of layers;let i=index;">
+      <ion-item  *ngIf="wxsLayer?.Title?.toLowerCase().includes(searchString.toLowerCase()) || wxsLayer?.name?.toLowerCase().includes(searchString.toLowerCase())">
+        <ion-label>{{wxsLayer.Title ? wxsLayer.Title : wxsLayer.name}}</ion-label>
+        <ion-checkbox  [value]="i" (ionChange)="toggleSelected(i)" [checked]="selectedLayers.includes(i)"></ion-checkbox>
+      </ion-item>
+    </div>
+  </ion-list>
+
+

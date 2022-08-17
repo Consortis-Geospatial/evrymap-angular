@@ -1,0 +1,392 @@
+<h1 class="leaflet-sidebar-header">
+  {{ "MAP.SIDE_MENU.LAYERS" | translate }}
+  <div class="leaflet-sidebar-close">
+    <ion-icon slot="icon-only" name="caret-back-outline"></ion-icon>
+  </div>
+</h1>
+
+<ion-segment [value]="layerSegmentValue" (ionChange)="layerSegmentChanged($event)" color="secondary">
+  <ion-segment-button value="layers" title="{{ 'MAP.SIDE_MENU.LAYERS' | translate }}">
+    <ion-icon name="layers"></ion-icon>
+  </ion-segment-button>
+  <ion-segment-button value="actions" title="{{ 'MAP.SIDE_MENU.LAYERS_SUBMENU.ACTIONS' | translate }}">
+    <ion-icon name="options"></ion-icon>
+  </ion-segment-button>
+</ion-segment>
+
+<div id="layers" *ngIf="layerSegmentValue === 'layers'">
+  <ion-searchbar placeholder="{{ 'COMMON.SEARCH' | translate }}" showCancelButton="never" [debounce]="250"
+    (ionChange)="searchLayers($event)"></ion-searchbar>
+  <ion-reorder-group (ionItemReorder)="reorderLayers($event)" disabled="false">
+    <div *ngFor="let l of menuLayers; let i = index">
+      <ion-card class="custom-menu-header" *ngIf="l.layers.length && !l.hide">
+        <ion-item lines="none">
+          <ion-reorder class="custom-ion-reorder" slot="start" title="{{
+              'MAP.SIDE_MENU.LAYERS_SUBMENU.REORDER_LAYER' | translate
+            }}">
+            <ion-icon name="reorder-two-sharp" size="large"></ion-icon>
+          </ion-reorder>
+          <ion-toolbar class="custom-ion-card-header-no-padding-top-bottom">
+            <ion-buttons slot="start" style="margin-left: 0px">
+              <ion-card-header>
+                <ion-card-subtitle>
+                  <b> {{ l.group | translate}} </b>
+                </ion-card-subtitle>
+              </ion-card-header>
+            </ion-buttons>
+            <ion-buttons slot="end">
+              <ion-toggle id="{{ l.group }}Id" color="secondary" checked="{{ l.checked ? l.checked : false }}" title="{{
+                  'MAP.SIDE_MENU.LAYERS_SUBMENU.TOGGLE_VISIBLE' | translate
+                }}" (ionChange)="showHideLayers($event, l.group)"></ion-toggle>
+              <ion-button size="small" title="{{
+                  'MAP.SIDE_MENU.LAYERS_SUBMENU.TOGGLE_SELECTABLE' | translate
+                }}" (click)="queryableGroupClicked(l.group, l.queryable || false)">
+                <ion-icon slot="icon-only" name="flash-outline" [color]="!l.queryable ? 'medium' : 'warning'">
+                </ion-icon>
+              </ion-button>
+              <ion-button title="{{ 'COMMON.HIDE' | translate }}" *ngIf="l.collapse" (click)="l.collapse = !l.collapse">
+                <ion-icon slot="icon-only" name="caret-up-outline" color="medium"></ion-icon>
+              </ion-button>
+              <ion-button title="{{ 'COMMON.SHOW' | translate }}" *ngIf="!l.collapse"
+                (click)="l.collapse = !l.collapse">
+                <ion-icon slot="icon-only" name="caret-down-outline" color="medium"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-item>
+        <div *ngFor="let layer of l.layers" [@cardContentCollapsed]="!l.collapse">
+          <ion-card-content *ngIf="!layer.hide">
+            <ion-toolbar>
+              <ion-text>
+                <h6>{{ layer.description | translate }}</h6>
+              </ion-text>
+              <ion-buttons slot="end">
+                <ion-button size="small" title="{{
+                    'MAP.SIDE_MENU.LAYERS_SUBMENU.ZOOM_TO_LAYER' | translate
+                  }}" (click)="removeLayer($event, layer.id)" *ngIf="isExternalOrOgreGeojson[layer.id]">
+                  <ion-icon slot="icon-only" name="close-circle-outline" color="danger"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+              <ion-buttons slot="start">
+                <ion-toggle color="secondary" checked="{{ layer.checked }}" title="{{
+                    'MAP.SIDE_MENU.LAYERS_SUBMENU.TOGGLE_VISIBLE' | translate
+                  }}" (ionChange)="showHideLayer($event, layer.id, l.group)" *ngIf="!layer.hasError"></ion-toggle>
+                <ion-button size="small" title="{{
+                    'MAP.SIDE_MENU.LAYERS_SUBMENU.ZOOM_TO_LAYER' | translate
+                  }}" (click)="zoomLayer(layer.id)" *ngIf="!layer.hasError">
+                  <ion-icon slot="icon-only" name="search-outline" color="success"></ion-icon>
+                </ion-button>
+                <ion-button size="small" title="{{
+                    'MAP.SIDE_MENU.LAYERS_SUBMENU.TOGGLE_SELECTABLE' | translate
+                  }}" (click)="queryableLayerClicked(layer.id)" *ngIf="!layer.hasError">
+                  <ion-icon slot="icon-only" name="flash-outline" [color]="!layer.queryable ? 'medium' : 'warning'">
+                  </ion-icon>
+                </ion-button>
+                <ion-button size="small" title="{{
+                    'MAP.SIDE_MENU.LAYERS_SUBMENU.EXPORT_TO'
+                      | translate: { exportType: 'shapefile/CSV' }
+                  }}" (click)="exportLayerClicked($event, layer.id)" *ngIf="!layer.hasError && layer.exportable">
+                  <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+              <ion-badge slot="end" color="danger" *ngIf="layer.hasError">
+                Error
+              </ion-badge>
+            </ion-toolbar>
+            <ion-item lines="none">
+              <ion-range min="0" max="1" step="0.05" [value]="getOpacityByLayerId(layer.id)" color="secondary" title="{{
+                  'MAP.SIDE_MENU.LAYERS_SUBMENU.TRANSPARENCY' | translate
+                }}" (ionChange)="opacityChanged($event, layer.id)" *ngIf="!layer.hasError">
+              </ion-range>
+            </ion-item>
+          </ion-card-content>
+        </div>
+      </ion-card>
+    </div>
+  </ion-reorder-group>
+</div>
+
+<div *ngIf="layerSegmentValue === 'actions'">
+  <ion-card class="custom-menu-header">
+    <ion-toolbar class="custom-ion-card-header-no-padding-top-bottom">
+      <ion-buttons slot="start">
+        <ion-card-header>
+          <ion-card-subtitle>
+            {{ "MAP.SIDE_MENU.LAYERS_SUBMENU.ADD_LAYER" | translate }}
+          </ion-card-subtitle>
+        </ion-card-header>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button title="{{ 'COMMON.HIDE' | translate }}" *ngIf="collapseViewCards.addLayer"
+          (click)="collapseViewCards.addLayer = !collapseViewCards.addLayer">
+          <ion-icon slot="icon-only" name="caret-up-outline" color="medium"></ion-icon>
+        </ion-button>
+        <ion-button title="{{ 'COMMON.SHOW' | translate }}" *ngIf="!collapseViewCards.addLayer"
+          (click)="collapseViewCards.addLayer = !collapseViewCards.addLayer">
+          <ion-icon slot="icon-only" name="caret-down-outline" color="medium"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-card-content [@cardContentCollapsed]="!collapseViewCards.addLayer">
+      <ion-list>
+        <ion-item>
+          <ion-input placeholder="{{
+              'MAP.SIDE_MENU.LAYERS_SUBMENU.ADDRESS' | translate
+            }}" [(ngModel)]="serviceUrl">
+          </ion-input>
+
+        </ion-item>
+        <p>{{ serviceUrl }}</p>
+        <ion-item>
+          <ion-label>{{
+            "MAP.SIDE_MENU.LAYERS_SUBMENU.SERVICE_TYPE" | translate
+            }}</ion-label>
+          <ion-select interface="popover" [(ngModel)]="serviceType">
+            <ion-select-option value="WMS"> WMS </ion-select-option>
+            <ion-select-option value="WFS"> WFS </ion-select-option>
+            <ion-select-option value="ESRIMAP">
+              ESRI DYNAMIC MAP
+            </ion-select-option>
+            <ion-select-option value="ESRIFEATURE">
+              ESRI FEATURE
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+      <ion-button (click)="connectToService()">
+        <!-- {{ "MAP.SIDE_MENU.LAYERS_SUBMENU.CONNECT" | translate  }} -->
+        <ion-icon name="send-outline"></ion-icon>
+      </ion-button>
+      <ion-item button (click)="openSelectLayers($event)" [disabled]="wxsLayers.length === 0">
+        <ion-label>{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.LAYERS" | translate
+          }}</ion-label>
+        <!-- <ion-select
+          #wxsSelectLayer
+          [disabled]="wxsLayers.length === 0"
+          interface="popover"
+          multiple
+        >
+          <ion-select-option
+            *ngFor="let wxsLayer of wxsLayers"
+            [value]="wxsLayer"
+          >
+            {{ wxsLayer.Title ? wxsLayer.Title : wxsLayer.name}}
+          </ion-select-option>
+        </ion-select> -->
+        <ion-text style="width: 70%">{{
+          wxsSelectedLayersText.join(",")
+          }}</ion-text>
+      </ion-item>
+
+      <!-- <ion-item>
+        <ion-label>CRS</ion-label>
+        <ion-select
+          interface="popover"
+          #wxsCRSselect
+          [(ngModel)]="selectedWxsCRS"
+          [disabled]="wxsCRS.length === 0"
+          *ngIf="wxsCRS !== []"
+        >
+          <ion-select-option *ngFor="let crs of wxsCRS" [value]="crs">
+            {{ crs }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item> -->
+      <ion-item *ngIf="
+          wxsJson &&
+          (!!wxsJson['wfs:WFS_Capabilities'] ||
+            connectedServiceType === 'ESRIFEATURE')
+        ">
+        <ion-label position="stacked">{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.STROKE_COLOR" | translate
+          }}</ion-label>
+        <ion-input type="color" [(ngModel)]="wfsColor"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="
+          wxsJson &&
+          (!!wxsJson['wfs:WFS_Capabilities'] ||
+            connectedServiceType === 'ESRIFEATURE')
+        ">
+        <ion-label position="stacked">{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.STROKE_WIDTH" | translate
+          }}</ion-label>
+        <ion-input type="number" [(ngModel)]="wfsWeight"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="
+          wxsJson &&
+          (!!wxsJson['wfs:WFS_Capabilities'] ||
+            connectedServiceType === 'ESRIFEATURE')
+        ">
+        <ion-label position="stacked">{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.FILL_COLOR" | translate
+          }}</ion-label>
+        <ion-input type="color" [(ngModel)]="wfsFillColor"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="
+          wxsJson &&
+          (!!wxsJson['wfs:WFS_Capabilities'] ||
+            connectedServiceType === 'ESRIFEATURE')
+        ">
+        <ion-label position="stacked">{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.RADIUS" | translate
+          }}</ion-label>
+        <ion-input type="number" [(ngModel)]="wfsRadius"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="
+          wxsJson &&
+          (!!wxsJson['wfs:WFS_Capabilities'] ||
+            connectedServiceType === 'ESRIFEATURE')
+        ">
+        <ion-label position="stacked">{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.FILL_OPACITY" | translate
+          }}</ion-label>
+        <!-- <ion-input type="number" ></ion-input> -->
+        <ion-range min="0" max="1" step="0.05" color="secondary" [(ngModel)]="wfsFillOpacity">
+          <ion-label slot="start">0</ion-label>
+          <ion-label slot="end">1</ion-label>
+        </ion-range>
+      </ion-item>
+      <ion-button (click)="addWxSLayer(wxsSelectedLayers)" [disabled]="wxsSelectedLayers.length === 0">
+        <!-- || !selectedWxsCRS -->
+        <!-- {{ "MAP.SIDE_MENU.LAYERS_SUBMENU.ADD_LAYER" | translate }} -->
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="custom-menu-header" *ngIf="this.configuration.layout?.saveView">
+    <ion-toolbar class="custom-ion-card-header-no-padding-top-bottom">
+      <ion-buttons slot="start">
+        <ion-card-header>
+          <ion-card-subtitle>
+            {{ "MAP.SIDE_MENU.LAYERS_SUBMENU.VIEWS" | translate }}
+          </ion-card-subtitle>
+        </ion-card-header>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button title="{{ 'COMMON.HIDE' | translate }}" *ngIf="collapseViewCards.mapViews"
+          (click)="collapseViewCards.mapViews = !collapseViewCards.mapViews">
+          <ion-icon slot="icon-only" name="caret-up-outline" color="medium"></ion-icon>
+        </ion-button>
+        <ion-button title="{{ 'COMMON.SHOW' | translate }}" *ngIf="!collapseViewCards.mapViews"
+          (click)="collapseViewCards.mapViews = !collapseViewCards.mapViews">
+          <ion-icon slot="icon-only" name="caret-down-outline" color="medium"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-card-content [@cardContentCollapsed]="!collapseViewCards.mapViews">
+      <ion-list>
+        <ion-item>
+          <ion-input type="text" placeholder="{{
+              'MAP.SIDE_MENU.LAYERS_SUBMENU.SAVE_VIEW_PLACEHOLDER' | translate
+            }}" [(ngModel)]="saveViewName"></ion-input>
+          <ion-button slot="end" fill="clear" (click)="saveViewClicked()"
+            title="{{ 'MAP.SIDE_MENU.LAYERS_SUBMENU.SAVE_VIEW' | translate }}">
+            <ion-icon slot="icon-only" name="add-outline" color="medium"></ion-icon>
+          </ion-button>
+          <ion-button slot="end" fill="clear" (click)="saveViewClicked(true)"
+            title="{{ 'MAP.SIDE_MENU.LAYERS_SUBMENU.HOME_VIEW' | translate }}">
+            <ion-icon name="home-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-list-header lines="none">
+          <ion-label color="secondary">
+            <h5>
+              {{ "MAP.SIDE_MENU.LAYERS_SUBMENU.SAVED_VIEWS" | translate }}
+            </h5>
+          </ion-label>
+        </ion-list-header>
+        <ion-item lines="none" *ngFor="let view of savedViewsList; let i = index">
+          <ion-label>
+            {{ getViewName(view.name) }}
+          </ion-label>
+          <ion-buttons>
+            <ion-button (click)="goToView(view)">
+              <ion-icon name="locate-outline"></ion-icon>
+            </ion-button>
+            <ion-button (click)="deleteView(i)">
+              <ion-icon name="close-circle-outline" color="danger"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="custom-menu-header">
+    <ion-toolbar class="custom-ion-card-header-no-padding-top-bottom">
+      <ion-buttons slot="start">
+        <ion-card-header>
+          <ion-card-subtitle>
+            {{ "MAP.SIDE_MENU.LAYERS_SUBMENU.ADD_SHAPEFILE" | translate }}
+          </ion-card-subtitle>
+        </ion-card-header>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button title="{{ 'COMMON.HIDE' | translate }}" *ngIf="collapseViewCards.addShapefile" (click)="
+            collapseViewCards.addShapefile = !collapseViewCards.addShapefile
+          ">
+          <ion-icon slot="icon-only" name="caret-up-outline" color="medium"></ion-icon>
+        </ion-button>
+        <ion-button title="{{ 'COMMON.SHOW' | translate }}" *ngIf="!collapseViewCards.addShapefile" (click)="
+            collapseViewCards.addShapefile = !collapseViewCards.addShapefile
+          ">
+          <ion-icon slot="icon-only" name="caret-down-outline" color="medium"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-card-content [@cardContentCollapsed]="!collapseViewCards.addShapefile">
+      <ion-item>
+        <input #ogreFileInput type="file" accept="application/zip,.kml,.kmz,.shz,.dxf"
+          (change)="onFilePicked($event)" />
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          {{ "MAP.SIDE_MENU.LAYERS_SUBMENU.SOURCE_SRS" | translate }}</ion-label>
+        <ion-input [(ngModel)]="ogreSourceSrs" type="text" placeholder="EPSG:4326"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.STROKE_COLOR" | translate
+          }}</ion-label>
+        <ion-input type="color" [(ngModel)]="ogreColor"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.STROKE_WIDTH" | translate
+          }}</ion-label>
+        <ion-input type="number" [(ngModel)]="ogreWeight"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.FILL_COLOR" | translate
+          }}</ion-label>
+        <ion-input type="color" [(ngModel)]="ogreFillColor"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.RADIUS" | translate
+          }}</ion-label>
+        <ion-input type="number" [(ngModel)]="ogreRadius"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">{{
+          "MAP.SIDE_MENU.LAYERS_SUBMENU.FILL_OPACITY" | translate
+          }}</ion-label>
+        <!-- <ion-input type="number" ></ion-input> -->
+        <ion-range min="0" max="1" step="0.05" color="secondary" [(ngModel)]="ogreFillOpacity">
+          <ion-label slot="start">0</ion-label>
+          <ion-label slot="end">1</ion-label>
+        </ion-range>
+      </ion-item>
+      <ion-button title="{{ 'MAP.SIDE_MENU.LAYERS_SUBMENU.ADD_LAYER' | translate }}" (click)="getOgreGeojson()"
+        [disabled]="!ogreFile">
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</div>

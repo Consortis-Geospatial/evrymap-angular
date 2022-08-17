@@ -1,0 +1,195 @@
+{
+  "MAP": {
+    "EDIT": {
+      "NO_LAYERS": "Δεν βρέθηκαν επεξεργάσιμα επίπεδα",
+      "EDIT_LAYER": "Επεξεργασία Επιπέδου",
+      "SAVE": "Αποθήκευση",
+      "MAX_LENGTH_PREFIX": "Πρέπει να έχει έως",
+      "MAX_LENGTH_SUFFIX": "χαρακτήρες",
+      "GEOMETRY": "Γεωμετρία",
+      "SAVE_SUCCESS": "Επιτυχής Αποθήκευση",
+      "SELECT": "Επιλογή"
+    },
+    "SEARCH_RESULTS": {
+      "ADDRESS": "Διεύθυνση",
+      "ADDRESSES": "Διευθύνσεις",
+      "CATEGORY": "Κατηγορία",
+      "NO_RESULTS": "Δεν Υπάρχουν Αποτελέσματα",
+      "SEARCH_RESULTS": "Αναζήτηση Αποτελεσμάτων"
+    },
+    "SUBHEADER": {
+      "SEARCH_ADDRESS": "Αναζήτηση Διεύθυνσης",
+      "ZOOM_OUT": "Απομάκρυνση",
+      "POINT_SEARCH": "Αναγνώριση Αντικειμένων στο Χάρτη",
+      "RECTANGLE_SEARCH": "Αναζήτηση με δημιουργία παραλληλόγραμμου στο χάρτη",
+      "POLYGON_SEARCH": "Αναζήτηση με δημιουργία πολυγώνου στο χάρτη",
+      "FULL_FOCUS": "Πλήρης εστίαση",
+      "EDIT_LAYERS": "Επεξεργασία ή δημιουργία Θεματικών Επιπέδων",
+      "PREVIOUS_EXTENT": "Προηγούμενη Εστίαση",
+      "NEXT_EXTENT": "Επόμενη Εστίαση",
+      "HIDE_HEADER": "Απόκρυψη Κεφαλίδας",
+      "SHOW_HEADER": "Εμφάνιση Κεφαλίδας",
+      "POINT_SEARCH_VALUE": "αναζήτηση στα θεματικά επίπεδα",
+      "NO_LAYERS_FOUND": "Δεν εντοπίστηκαν θεματικά επίπεδα",
+      "SELECT_LAYER_TO_EDIT": "Επιλέξτε θεματικό επίπεδο για επεξεργασία",
+      "SELECT_LAYER": "Επιλέξτε θεματικό επίπεδο",
+      "ADD_PART": "Προσθήκη Τμήματος"
+    },
+    "SIDE_MENU": {
+      "BASEMAPS": "Υπόβαθρα",
+      "LAYERS": "Θεματικά Επίπεδα",
+      "LEGEND": "Υπόμνημα",
+      "SEARCH": "Αναζήτηση",
+      "TOOLS": "Εργαλεία",
+      "BASEMAP_SUBMENU": {
+        "HEADER": "OSM"
+      },
+      "LAYERS_SUBMENU": {
+        "REORDER_LAYER": "Επιλέξτε και μετακινήστε το επίπεδο σε νέα θέση",
+        "TOGGLE_VISIBLE": "Εναλλαγή ορατότητας επιπέδου",
+        "TOGGLE_SELECTABLE": "Εναλλαγή επιλεξιμότητας επιπέδου",
+        "EXPORT_TO": "Αποθήκευση σε {{exportType}}",
+        "ZOOM_TO_LAYER": "Εστίαση στο επίπεδο",
+        "TRANSPARENCY": "Διαφάνεια",
+        "ACTIONS": "Ενέργειες",
+        "ADD_LAYER": "Προσθήκη Επιπέδου",
+        "VIEWS": "Προβολές Χαρτών",
+        "SAVE_VIEW_PLACEHOLDER": "Όνομα νέας προβολής",
+        "SAVE_VIEW": "Αποθήκευση Προβολής Χάρτη",
+        "HOME_VIEW": "Αποθήκευση Προβολής Χάρτη ως αρχική",
+        "SAVED_VIEWS": "Αποθηκευμένες Προβολες",
+        "CLEAR_SAVED_VIEWS": "Διαγραφή Όλων των Αποθηκευμένων Προβολών",
+        "OPEN_SEARCH_PANEL": "Εμφάνιση Αναζήτησης",
+        "CLOSE_SEARCH_PANEL": "Απόκρυψη Αναζήτησης",
+        "VIEW_SAVED": "Η προβολή αποθηκεύτηκε",
+        "VIEW_DELETED": "Η προβολή διαγράφηκε",
+        "HOME": "Αρχική",
+        "ADDRESS": "Διεύθυνση",
+        "SERVICE_TYPE": "Τύπος Υπηρεσίας",
+        "CONNECT": "Συνδεση",
+        "LAYERS": "Επίπεδα",
+        "TITLE": "Τίτλος",
+        "STROKE_COLOR": "Χρώμα Γραμμής",
+        "STROKE_WIDTH": "Πλάτος Γραμμής",
+        "FILL_COLOR": "Χρώμα Γεμίσματος",
+        "DOESNT_ACCEPT_JSON": "Δεν δέχεται JSON",
+        "RADIUS": "Μέγεθος Σημείου",
+        "FILL_OPACITY": "Διαφάνεια",
+        "ADD_SHAPEFILE": "Προσθήκη Shapefile(Zip), KML, KMZ, DXF",
+        "SOURCE_SRS": "SRS αρχείου"
+      },
+      "TOOLS_SUBMENU": {
+        "DISTANCE": {
+          "HEADER": "Μέτρηση Απόστασης",
+          "POPUP_DISTANCE": "Απόσταση",
+          "MEASUREMENT": "Μέτρηση"
+        },
+        "AREA": {
+          "HEADER": "Μέτρηση Εμβαδών",
+          "POPUP_AREA": "Εμβαδόν"
+        },
+        "ZOOM_TO_XY": {
+          "HEADER": "Μετάβαση Σε Σημείο",
+          "COORDINATE_SYSTEM": "Σύστημα Συντεταγμένων",
+          "X_COORDINATE": "Συντεταγμένη Χ (λ)",
+          "Y_COORDINATE": "Συντεταγμένη Υ (φ)",
+          "ZOOM_LEVEL": "Επίπεδο Εστίασης",
+          "REMOVE_MARKERS": "Διαγραφή όλων",
+          "GET_FROM_MAP": "Κλικ στο χάρτη για να δείτε τις συντεταγμένες του σημείου",
+          "CREATE_PIN": "Δημιουργία Σημείου",
+          "PINS": "Σημεία",
+          "NO_PINS": "Δεν υπάρχουν σημεία στον χάρτη",
+          "DOUBLE_CLICK_MAP": "Επιλογή συντεταγμένων με διπλό κλικ",
+          "UNNAMED": "Ανώνυμο",
+          "MARKERS_REMOVED": "Όλα τα σημεία διαγράφηκαν"
+        },
+        "PRINT_MAP": {
+          "HEADER": "Εκτύπωση Χάρτη",
+          "PAGE_SIZE": "Μέγεθος σελίδας",
+          "ORIENTATION": "Προσανατολισμός",
+          "SCALE": "Κλίμακα 1:",
+          "GRID_STEP": "Βήμα Καννάβου",
+          "LANDSCAPE": "Τοπίο",
+          "PORTRAIT": "Πορτραίτο",
+          "AREA_SELECTION": "Επιλογή Περιοχής"
+        }
+      },
+      "SEARCH_SUBMENU": {
+        "FILTERS_OPERATORS": {
+          "EQUAL": "Είναι ίσο με",
+          "NOT_EQUAL": "Δεν είναι ίσο με",
+          "GREATER_THAN": "Είναι μεγαλύτερο από",
+          "LESS_THAN": "Είναι μικρότερο από",
+          "GREATER_OR_EQUAL": "Είναι μεγαλύτερο ή ίσο με",
+          "LESS_OR_EQUAL": "Είναι μικρότερο ή ίσο με",
+          "IS_LIKE": "Περιέχει",
+          "STARTS_WITH": "Αρχίζει από",
+          "END_WITH": "Τελειώνει σε"
+        },
+        "SPATIAL_SEARCH_OPERATORS": {
+          "INTERSECTS": "Τέμνουν (Intersects)",
+          "CONTAINS": "Περιέχουν (Contains)",
+          "WITHIN": "Βρίσκονται μέσα (Is Within)",
+          "WITHIN_DISTANCE": "Βρίσκονται σε απόσταση (Within Distance)",
+          "CROSSES": "Διαχίζουν (Crosses)",
+          "OVERLAPS": "Επικαλύπτουν (Overlaps)",
+          "TOUCHES": "Εφάπτονται (Touches)"
+        },
+        "AND_OPERATOR": "Να ισχύουν όλες οι τιμές (AND)",
+        "OR_OPERATOR": "Να ισχύει οποιαδήποτε από τις τιμές (OR)",
+        "SPATIAL_SEARCH": "Χωρική Αναζήτηση",
+        "SELECT_LAYER": "Επιλογή Θεματικού Επιπέδου",
+        "SELECT_FIELD": "Επιλογή Πεδίου",
+        "SELECT_OPERATOR": "Επιλογή Τελεστή",
+        "VALUE": "Τιμή",
+        "FILTERS_NOT_FILLED_OUT": "Δεν έχουν συμπληρωθεί όλα τα φίλτρα",
+        "SPATIAL_FILTERS_NOT_FILLED_OUT": "Δεν έχουν συμπληρωθεί όλα τα χωρικά φίλτρα",
+        "SPATIAL_DESCRIPTION_1": "τα οποία",
+        "SPATIAL_DESCRIPTION_2": "στα επιλεγμένα στοιχεία του θεματικού επιπέδου"
+      },
+      "SETTINGS_SUBMENU": {
+        "SETTINGS": "Ρυθμίσεις",
+        "LANGUAGE": "Γλώσσα",
+        "ENGLISH": "Αγγλικά",
+        "GREEK": "Ελληνικά",
+        "SELECT_LANGUAGE": "Επιλέξτε Γλώσσα"
+      }
+    }
+  },
+  "COMMON": {
+    "NAME": "Όνομα",
+    "TITLE": "Τίτλος",
+    "DESCRIPTION": "Περιγραφή",
+    "REQUIRED_FIELD": "Υποχρεωτικό Πεδίο",
+    "REQUIRED_FIELDS": "Υπάρχουν πεδία που είναι υποχρεωτικά και δεν έχουν συμπληρωθεί",
+    "DELETE": "Διαγραφή",
+    "ZOOM_IN": "Εστίαση",
+    "HIDE": "Απόκρυψη",
+    "SHOW": "Εμφάνιση",
+    "SEARCH": "Αναζήτηση",
+    "CLICK": "Κλικ για {{value}}",
+    "FILTERS": "Φίλτρα"
+  },
+  "DIALOGS": {
+    "CONFIRMATION": "Επιβεβαίωση",
+    "CANCEL": "Ακύρωση"
+  },
+  "ERRORS": {
+    "HTTP": "Πρόβλημα στην κλήση του URL '{{url}}'",
+    "MAP": {
+      "LOAD_LAYER": "Πρόβλημα στην φόρτωση του επιπέδου {{layer}}"
+    },
+    "LEGEND": {
+      "NO_IMAGE": "Δεν υπάρχει εικόνα"
+    },
+    "TOOLS": {
+      "COORDINATE_CONVERTION": "Προέκυψε σφάλμα στη διαδικασία μετατροπής των συντεταγμένων",
+      "PIN_WITH_SAME_NAME": "Δεν επιτρέπεται η δημιουργία σημείου με το ίδιο όνομα",
+      "URL_IS_NULL": "Το URL του request είναι κενό"
+    }
+  },
+  "EPSG:2100": "ΕΓΣΑ '87",
+  "EPSG:4326": "WGS'84 (φ, λ)",
+  "EPSG:3857": "WGS'84 (Ψευδομερκατορική)",
+  "CONFIG": {}
+}

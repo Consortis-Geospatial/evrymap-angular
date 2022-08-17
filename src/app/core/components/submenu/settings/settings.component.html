@@ -1,0 +1,42 @@
+<h1 class="leaflet-sidebar-header">
+  {{ "MAP.SIDE_MENU.SETTINGS_SUBMENU.SETTINGS" | translate }}
+  <div class="leaflet-sidebar-close">
+    <ion-icon slot="icon-only" name="caret-back-outline"></ion-icon>
+  </div>
+</h1>
+
+<ion-card>
+  <ion-card-content>
+    <!-- <ion-item lines="none">
+      <ion-label>Dark Theme</ion-label>
+      <ion-toggle slot="end"></ion-toggle>
+    </ion-item> -->
+    <ion-item lines="none">
+      <ion-label>{{
+        "MAP.SIDE_MENU.SETTINGS_SUBMENU.LANGUAGE" | translate
+      }}</ion-label>
+      <ion-select
+        [(ngModel)]="language"
+        interface="popover"
+        placeholder="{{
+          'MAP.SIDE_MENU.SETTINGS_SUBMENU.SELECT_LANGUAGE' | translate
+        }}"
+        (ionChange)="changeLang(language)"
+      >
+        <ion-select-option value="en">English</ion-select-option>
+        <ion-select-option value="el">Ελληνικά</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <!-- <ion-item lines="none">
+      <ion-label>Address Country Search</ion-label>
+      <ion-select
+        value=""
+        interface="popover"
+        placeholder="Select Address Country"
+      >
+        <ion-select-option value="peperoni">Peperoni</ion-select-option>
+        <ion-select-option value="hawaii">Hawaii</ion-select-option>
+      </ion-select>
+    </ion-item> -->
+  </ion-card-content>
+</ion-card>

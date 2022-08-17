@@ -1,0 +1,56 @@
+<h1 class="leaflet-sidebar-header">
+  {{ "MAP.SIDE_MENU.LEGEND" | translate }}
+  <div class="leaflet-sidebar-close">
+    <ion-icon slot="icon-only" name="caret-back-outline"></ion-icon>
+  </div>
+</h1>
+
+<ion-searchbar placeholder="{{ 'COMMON.SEARCH' | translate }}" showCancelButton="never" [debounce]="250"
+  (ionChange)="searchLayers($event)"></ion-searchbar>
+
+<div *ngFor="let l of menuLayers; let i = index">
+  <ion-card class="custom-menu-header" *ngIf="l.layers.length && !l.hide">
+    <!-- <ion-item lines="none"> -->
+    <ion-toolbar class="custom-ion-card-header-no-padding-top-bottom">
+      <ion-buttons slot="start" style="margin-left: 0px">
+        <ion-card-header>
+          <ion-card-subtitle>
+            <b> {{ l.group | translate}} </b>
+          </ion-card-subtitle>
+        </ion-card-header>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button title="{{ 'COMMON.HIDE' | translate }}" *ngIf="l.collapse" (click)="l.collapse = !l.collapse">
+          <ion-icon slot="icon-only" name="caret-up-outline" color="medium"></ion-icon>
+        </ion-button>
+        <ion-button title="{{ 'COMMON.SHOW' | translate }}" *ngIf="!l.collapse" (click)="l.collapse = !l.collapse">
+          <ion-icon slot="icon-only" name="caret-down-outline" color="medium"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <div *ngFor="let layer of l.layers" [@cardContentCollapsed]="!l.collapse">
+      <ion-card-content *ngIf="!layer.hide">
+        <ion-text>
+          <h6>{{ layer.description | translate }}</h6>
+        </ion-text>
+        <ion-grid>
+          <!-- <ion-row *ngIf="layer.image && !layer.esriImage"> -->
+          <ion-row *ngIf="layer.image">
+            <ion-col size="12">
+              <img [src]="layer.image" alt="{{ 'ERRORS.LEGEND.NO_IMAGE' | translate }}" />
+            </ion-col>
+          </ion-row>
+          <div *ngIf="layer.esriImage && !layer.image">
+            <ion-row *ngFor="let img of layer.esriImage">
+              <ion-col size="3">
+                <img [src]="img.url" alt="{{ 'ERRORS.LEGEND.NO_IMAGE' | translate }}" />
+              </ion-col>
+              <ion-col size="5">{{ img.layerName }}</ion-col>
+              <ion-col size="4">{{ img.label }}</ion-col>
+            </ion-row>
+          </div>
+        </ion-grid>
+      </ion-card-content>
+    </div>
+  </ion-card>
+</div>

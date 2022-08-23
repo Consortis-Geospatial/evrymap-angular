@@ -19,10 +19,16 @@
         *ngIf="!headerCollapsed">
         <ion-icon slot="icon-only" name="caret-up-outline"></ion-icon>
       </ion-button>
+
+    </ion-buttons>
+    <ion-buttons slot="start" class="custom-subheader">
       <ion-button *ngIf="configuration.general?.helpUrl" (click)="openHelpWindow()">
         <ion-icon name="help-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
+
+
+
     <app-subheader [searchedLayers]="searchedLayers"></app-subheader>
   </ion-toolbar>
   <ion-progress-bar *ngIf="isLoading" type="indeterminate" color="danger"></ion-progress-bar>
